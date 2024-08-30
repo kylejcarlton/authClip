@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display and Copy Key</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        .key-container {
+            background: #1e1e1e;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 90%;
+            word-break: break-all;
+        }
+        .key-display {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: #bb86fc;
+        }
+        button {
+            padding: 12px 24px;
+            font-size: 14px;
+            color: #ffffff;
+            background-color: #6200ea;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #3700b3;
+        }
+        button:disabled {
+            background-color: #3c3c3c;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div class="key-container">
+    <div id="keyDisplay" class="key-display">No key found.</div>
+    <button id="copyButton">Copy Key to Clipboard</button>
+</div>
+
+<script>
+    // Function to get the 'code' parameter from the URL
+    function getKeyFromURL() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const key = urlParams.get('code'); // Get the 'code' parameter
+        return key;
+    }
+
+    // Function to copy the key to the clipboard
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Key copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
+
+    // Display the key if found
+    document.addEventListener('DOMContentLoaded', () => {
+        const key = getKeyFromURL();
+        const keyDisplay = document.getElementById('keyDisplay');
+        const copyButton = document.getElementById('copyButton');
+
+        if (key) {
+            keyDisplay.textContent = key;
+            copyButton.onclick = () => copyToClipboard(key);
+        } else {
+            keyDisplay.textContent = 'No key found in the URL.';
+            copyButton.disabled = true;
+        }
+    });
+</script>
+
+</body>
+</html>
